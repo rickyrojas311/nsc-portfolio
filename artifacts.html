@@ -6,6 +6,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/bubble-chart.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -26,10 +27,21 @@
 
             <div id="main">
                 <section>
-                    <header class="major">
-                        <!-- <h2>Explore Artifacts</h2> -->
-                    </header>
-
+                    					<ul class="actions">
+						<li><a href="#" id="type-view-btn" class="button primary">Type</a></li>
+						<li><a href="#" id="audience-view-btn" class="button">Audience</a></li>
+					</ul>
+					<div id="bubble-chart-container"></div>
+					<div id="audience-view-container" style="display: none;">
+						<div class="column">
+							<h2>General</h2>
+							<div id="general-column"></div>
+						</div>
+						<div class="column">
+							<h2>Specialized</h2>
+							<div id="specialized-column"></div>
+						</div>
+					</div>
                 </section>
 
             </div>
@@ -43,5 +55,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://d3js.org/d3.v7.min.js"></script>
+			<script src="assets/js/bubble-chart.js"></script>
     </body>
 </html>
