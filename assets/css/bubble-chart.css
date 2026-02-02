@@ -57,7 +57,7 @@
     fill: #000; /* Black by default */
     text-anchor: middle;
     pointer-events: none;
-    font-size: 20px; /* Increased from 10px */
+    font-size: 1.25rem; /* Increased from 10px */
     font-family: "Source Sans Pro", Helvetica, sans-serif;
 }
 

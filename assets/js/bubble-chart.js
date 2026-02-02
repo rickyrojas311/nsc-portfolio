@@ -2,14 +2,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const artifacts = [
         { title: "Mexico Cartels", category: "Infographic", link: "pg1.html", audience: "General", focus: 1, bodyText: "An ancient lens that focuses starlight into coherent data streams, revealing secrets of distant galaxies." },
-        { title: "Flights", category: "Infographic", link: "pg2.html", audience: "General", focus: 0, bodyText: "A device that measures temporal displacement, crucial for understanding time-dilation effects near massive objects." },
-        { title: "Building Brains", category: "Exhibit", link: "pg4.html", audience: "General", focus: 0, bodyText: "Extracts and stores faint consciousness imprints from the quantum foam." },
-        { title: "Campus Board", category: "Exhibit", link: "pg5.html", audience: "General", focus: 1, bodyText: "A crystal that resonates with the gravitational waves of binary stars, creating complex auditory patterns." },
-        { title: "Teaching", category: "Infographic", link: "pg3.html", audience: "General", focus: 1, bodyText: "A fabric woven from solidified vacuum energy, providing unparalleled protection against cosmic radiation." },
-        { title: "ISMRM Presentation", category: "Poster", link: "pg3.html", audience: "Specialized", focus: 0, bodyText: "A light-sail designed to navigate the turbulent energy currents of inter-dimensional rifts." },
-        { title: "Pronoun Coreference", category: "Paper", link: "pg6.html", audience: "Specialized", focus: 0, bodyText: "Generates a localized, stable gravity field, essential for starship docking and habitat stabilization." },
-        { title: "Speaker Decoding", category: "Paper", link: "pg7.html", audience: "Specialized", focus: 1, bodyText: "A quantum device that calculates and displays the most likely outcomes of any given event." },
-        { title: "Attention Morphology", category: "Poster", link: "pg5.html", audience: "Specialized", focus: 1, bodyText: "Uses subspace echoes to map terrains and structures obscured by dense matter or energy fields." },
+        { title: "Flights", category: "Infographic", link: "pg2.html", audience: "General", focus: 0.95, bodyText: "A device that measures temporal displacement, crucial for understanding time-dilation effects near massive objects." },
+        { title: "Building Brains", category: "Exhibit", link: "pg4.html", audience: "General", focus: 0.8, bodyText: "Extracts and stores faint consciousness imprints from the quantum foam." },
+        { title: "Campus Board", category: "Exhibit", link: "pg5.html", audience: "General", focus: 0.9, bodyText: "A crystal that resonates with the gravitational waves of binary stars, creating complex auditory patterns." },
+        { title: "Teaching", category: "Infographic", link: "pg3.html", audience: "General", focus: 0.8, bodyText: "A fabric woven from solidified vacuum energy, providing unparalleled protection against cosmic radiation." },
+        { title: "ISMRM Presentation", category: "Poster", link: "pg3.html", audience: "Specialized", focus: 0.2, bodyText: "A light-sail designed to navigate the turbulent energy currents of inter-dimensional rifts." },
+        { title: "Pronoun Coreference", category: "Paper", link: "pg6.html", audience: "Specialized", focus: 0.6, bodyText: "Generates a localized, stable gravity field, essential for starship docking and habitat stabilization." },
+        { title: "Speaker Decoding", category: "Paper", link: "pg7.html", audience: "Specialized", focus: 0.5, bodyText: "A quantum device that calculates and displays the most likely outcomes of any given event." },
+        { title: "Attention Morphology", category: "Poster", link: "pg5.html", audience: "Specialized", focus: 0.4, bodyText: "Uses subspace echoes to map terrains and structures obscured by dense matter or energy fields." },
     ];
 
     artifacts.sort((a, b) => a.category.localeCompare(b.category));
@@ -199,22 +199,22 @@ document.addEventListener('DOMContentLoaded', function() {
             // REDUCED: Was baseRadius * 12, now * 6
             height = baseRadius * 6; 
             
-            svg.transition().duration(500)
+            svg.transition().duration(1500)
                .attr("height", height)
                .attr("viewBox", `0 0 ${width} ${height}`);
 
             xScale.range([width * 0.15, width * 0.85]);
             
-            simulation.force("x", d3.forceX((d, i) => xScale(i)).strength(0.5));
+            simulation.force("x", d3.forceX((d, i) => xScale(i)).strength(0.1));
             simulation.force("y", d3.forceY(height / 2).strength(0.1));
             
-            audienceLabels.transition().duration(300).style("opacity", 0);
+            audienceLabels.transition().duration(1000).style("opacity", 0);
 
         } else {
             // REDUCED: Was baseRadius * 20, now * 14
             height = baseRadius * 10;
 
-            svg.transition().duration(500)
+            svg.transition().duration(1500)
                .attr("height", height)
                .attr("viewBox", `0 0 ${width} ${height}`);
 
@@ -223,17 +223,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             simulation.force("x", d3.forceX(d => 
                 d.audience === 'General' ? centerLeft : centerRight
-            ).strength(0.4));
+            ).strength(0.2));
 
             simulation.force("y", d3.forceY(height * 0.5).strength(0.1));
 
             labelGeneral.attr("x", centerLeft).attr("y", 40); 
             labelSpecialized.attr("x", centerRight).attr("y", 40);
             
-            audienceLabels.transition().duration(600).style("opacity", 1);
+            audienceLabels.transition().duration(1500).style("opacity", 1);
         }
 
-        simulation.alpha(0.8).restart();
+        simulation.alpha(0.5).restart();
     }
 
     simulation.on("tick", () => {
@@ -255,23 +255,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const typeViewBtn = document.getElementById('type-view-btn');
     const audienceViewBtn = document.getElementById('audience-view-btn');
 
-    typeViewBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (currentView === 'type') return;
-        currentView = 'type';
-        typeViewBtn.classList.add('primary');
-        audienceViewBtn.classList.remove('primary');
-        updatePositions();
-    });
+    if (typeViewBtn) {
+        typeViewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentView === 'type') return;
+            currentView = 'type';
+            typeViewBtn.classList.add('primary');
+            if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
+            updatePositions();
+        });
+    }
 
-    audienceViewBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (currentView === 'audience') return;
-        currentView = 'audience';
-        audienceViewBtn.classList.add('primary');
-        typeViewBtn.classList.remove('primary');
-        updatePositions();
-    });
+    if (audienceViewBtn) {
+        audienceViewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentView === 'audience') return;
+            currentView = 'audience';
+            audienceViewBtn.classList.add('primary');
+            if (typeViewBtn) typeViewBtn.classList.remove('primary');
+            updatePositions();
+        });
+    }
 
     updatePositions();
 });
