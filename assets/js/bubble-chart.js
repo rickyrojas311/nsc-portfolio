@@ -64,12 +64,32 @@ document.addEventListener('DOMContentLoaded', function() {
         .style("font-weight", "800")
         .style("font-size", "32px");
 
+    // --- FOCUS VIEW ELEMENTS ---
+    const focusAxisGroup = svg.append("g")
+        .attr("class", "focus-axis")
+        .style("opacity", 0)
+        .style("pointer-events", "none");
+
+    const focusAxisLine = focusAxisGroup.append("line")
+        .attr("class", "focus-axis-line");
+
+    const focusLabelLeft = focusAxisGroup.append("text")
+        .text("Computational Learning")
+        .attr("class", "focus-label")
+        .attr("text-anchor", "start");
+
+    const focusLabelRight = focusAxisGroup.append("text")
+        .text("Human Learning")
+        .attr("class", "focus-label")
+        .attr("text-anchor", "end");
+
     // --- SIMULATION ---
     const simulation = d3.forceSimulation(artifacts)
         .force("x", d3.forceX((d, i) => xScale(i)).strength(0.5))
         .force("y", d3.forceY(height / 2).strength(0.1))
         .force("charge", d3.forceManyBody().strength(-15))
-        .force("collide", d3.forceCollide(d => d.size + 2).strength(1));
+        .force("collide", d3.forceCollide(d => d.size + 2).strength(1))
+        .alphaDecay(0.01);
 
     function setBubbleSizes() {
         let baseRadius = Math.max(width / 18, 35); 
@@ -120,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let groupNodes;
         if (currentView === 'audience') {
             groupNodes = artifacts.filter(item => item.audience === d.audience);
+        } else if (currentView === 'focus') {
+            groupNodes = [d];
         } else {
             groupNodes = artifacts.filter(item => item.category === d.category);
         }
@@ -129,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tooltip.transition().duration(200).style("opacity", .95);
         
-        if (currentView === 'audience') {
+        if (currentView === 'audience' || currentView === 'focus') {
             tooltip.html(`
                 <p style="margin: 0;">${d.bodyText}</p>
             `);
@@ -159,6 +181,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .attr("opacity", b => {
                 if (currentView === 'audience') {
                     return (b.audience === d.audience) ? 1 : 0.4;
+                } else if (currentView === 'focus') {
+                    return (b === d) ? 1 : 0.4;
                 } else {
                     return (b.category === d.category) ? 1 : 0.4;
                 }
@@ -170,6 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (currentView === 'audience') {
                     if (b.audience !== d.audience) return "#d3d3d3";
+                } else if (currentView === 'focus') {
+                    return "#d3d3d3";
                 } else {
                     if (b.category !== d.category) return "#d3d3d3";
                 }
@@ -193,13 +219,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updatePositions() {
         // --- UPDATED HEIGHT LOGIC ---
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
         const baseRadius = Math.max(width / 18, 35);
         
         if (currentView === 'type') {
             // REDUCED: Was baseRadius * 12, now * 6
             height = baseRadius * 6; 
             
-            svg.transition().duration(1500)
+            svg.transition().duration(2500)
                .attr("height", height)
                .attr("viewBox", `0 0 ${width} ${height}`);
 
@@ -208,13 +235,14 @@ document.addEventListener('DOMContentLoaded', function() {
             simulation.force("x", d3.forceX((d, i) => xScale(i)).strength(0.1));
             simulation.force("y", d3.forceY(height / 2).strength(0.1));
             
-            audienceLabels.transition().duration(1000).style("opacity", 0);
+            audienceLabels.transition().duration(500).style("opacity", 0);
+            focusAxisGroup.transition().duration(500).style("opacity", 0);
 
-        } else {
+        } else if (currentView === 'audience') {
             // REDUCED: Was baseRadius * 20, now * 14
             height = baseRadius * 10;
 
-            svg.transition().duration(1500)
+            svg.transition().duration(2500)
                .attr("height", height)
                .attr("viewBox", `0 0 ${width} ${height}`);
 
@@ -223,20 +251,74 @@ document.addEventListener('DOMContentLoaded', function() {
             
             simulation.force("x", d3.forceX(d => 
                 d.audience === 'General' ? centerLeft : centerRight
-            ).strength(0.2));
+            ).strength(0.3));
 
             simulation.force("y", d3.forceY(height * 0.5).strength(0.1));
 
             labelGeneral.attr("x", centerLeft).attr("y", 40); 
             labelSpecialized.attr("x", centerRight).attr("y", 40);
             
-            audienceLabels.transition().duration(1500).style("opacity", 1);
+            audienceLabels.transition().duration(500).style("opacity", 1);
+            focusAxisGroup.transition().duration(500).style("opacity", 0);
+
+        } else if (currentView === 'focus') {
+            // Use rems for height to ensure responsiveness
+            height = 25 * rem;
+
+            svg.transition().duration(2500)
+               .attr("height", height)
+               .attr("viewBox", `0 0 ${width} ${height}`);
+
+            const axisY = height - (3 * rem);
+            
+            // Update visual elements
+            focusAxisLine
+                .attr("x1", width * 0.05)
+                .attr("x2", width * 0.95)
+                .attr("y1", axisY)
+                .attr("y2", axisY);
+
+            focusLabelLeft
+                .attr("x", width * 0.05)
+                .attr("y", axisY + (1.5 * rem))
+                .style("font-size", `${1 * rem}px`);
+
+            focusLabelRight
+                .attr("x", width * 0.95)
+                .attr("y", axisY + (1.5 * rem))
+                .style("font-size", `${1 * rem}px`);
+
+            // Forces
+            // Map focus (0..1) to x-axis range
+            simulation.force("x", d3.forceX(d => {
+                return (width * 0.15) + (d.focus * (width * 0.5));
+            }).strength(0.5));
+
+            // Gravity: Pull down towards the axis
+            simulation.force("y", d3.forceY(axisY).strength(0.3));
+
+            audienceLabels.transition().duration(500).style("opacity", 0);
+            focusAxisGroup.transition().duration(500).style("opacity", 1);
         }
 
-        simulation.alpha(0.5).restart();
+        simulation.alpha(0.3).restart();
     }
 
     simulation.on("tick", () => {
+         if (currentView === 'focus') {
+             // Constraint: strictly above x-axis
+             const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+             // We must recalculate axisY here because 'height' might be animating or changed
+             // However, 'height' variable is updated in updatePositions.
+             // To be safe, we use the current height variable.
+             const axisY = height - (3 * rem);
+             
+             artifacts.forEach(d => {
+                 if (d.y + d.size > axisY - 5) {
+                     d.y = axisY - d.size - 5;
+                 }
+             });
+         }
          nodeGroup.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
@@ -254,6 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const typeViewBtn = document.getElementById('type-view-btn');
     const audienceViewBtn = document.getElementById('audience-view-btn');
+    const focusViewBtn = document.getElementById('focus-view-btn');
 
     if (typeViewBtn) {
         typeViewBtn.addEventListener('click', (e) => {
@@ -262,6 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentView = 'type';
             typeViewBtn.classList.add('primary');
             if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
+            if (focusViewBtn) focusViewBtn.classList.remove('primary');
             updatePositions();
         });
     }
@@ -273,6 +357,19 @@ document.addEventListener('DOMContentLoaded', function() {
             currentView = 'audience';
             audienceViewBtn.classList.add('primary');
             if (typeViewBtn) typeViewBtn.classList.remove('primary');
+            if (focusViewBtn) focusViewBtn.classList.remove('primary');
+            updatePositions();
+        });
+    }
+
+    if (focusViewBtn) {
+        focusViewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentView === 'focus') return;
+            currentView = 'focus';
+            focusViewBtn.classList.add('primary');
+            if (typeViewBtn) typeViewBtn.classList.remove('primary');
+            if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
             updatePositions();
         });
     }

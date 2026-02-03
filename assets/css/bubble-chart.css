@@ -116,3 +116,17 @@
     font-family: "Source Sans Pro", Helvetica, sans-serif;
     font-size: 1.1em; /* Made these slightly bigger too for consistency */
 }
+
+/* --- Focus View --- */
+.focus-axis-line {
+    stroke: #333;
+    stroke-width: 2px;
+}
+
+.focus-label {
+    font-family: "Source Sans Pro", Helvetica, sans-serif;
+    font-weight: 900;
+    fill: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.075em;
+}
