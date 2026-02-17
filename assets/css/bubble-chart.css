@@ -130,3 +130,8 @@
     text-transform: uppercase;
     letter-spacing: 0.075em;
 }
+
+/* --- View Descriptions --- */
+.view-description {
+    margin-top: 2rem;
+}
