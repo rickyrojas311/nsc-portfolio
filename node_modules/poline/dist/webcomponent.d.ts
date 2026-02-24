@@ -1,0 +1,36 @@
+import { Poline, positionFunctions, ColorPoint } from "./index";
+export { Poline, positionFunctions };
+export declare class PolinePicker extends HTMLElement {
+    private poline;
+    private svg;
+    private interactive;
+    private line;
+    private wheel;
+    private anchors;
+    private points;
+    private currentPoint;
+    private allowAddPoints;
+    private boundPointerDown;
+    private boundPointerMove;
+    private boundPointerUp;
+    constructor();
+    connectedCallback(): void;
+    disconnectedCallback(): void;
+    setPoline(poline: Poline): void;
+    setAllowAddPoints(allow: boolean): void;
+    addPointAtPosition(x: number, y: number): ColorPoint | null;
+    private updateLightnessBackground;
+    private render;
+    private createSVG;
+    updateSVG(): void;
+    private pointToCartesian;
+    private addEventListeners;
+    private removeEventListeners;
+    private handlePointerDown;
+    private handlePointerMove;
+    private handlePointerUp;
+    private getPointerPosition;
+    private pointerToNormalizedCoordinates;
+    private createCircleElement;
+    private dispatchPolineChange;
+}

@@ -37,7 +37,20 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr("viewBox", `0 0 ${width} ${height}`);
 
     const categories = [...new Set(artifacts.map(d => d.category))];
-    const color = d3.scaleOrdinal(d3.schemeTableau10).domain(categories);
+
+    const bubbleColors = [
+        "#8624ca",
+        "#be50d9",
+        "#d472d3",
+        "#d78dd2",
+        "#d5a3d8",
+        "#a479d8",
+        "#8b58d2",
+        "#853ecf",
+        "#8624ca"
+    ];
+
+    artifacts.forEach((d, i) => d.color = bubbleColors[i]);
     
     const xScale = d3.scaleLinear()
         .domain([0, artifacts.length - 1])
@@ -125,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const bubbles = nodeGroup.append("circle")
         .attr("r", d => d.size)
-        .attr("fill", d => color(d.category))
+        .attr("fill", d => d.color)
         .attr("class", "bubble");
 
     const labels = nodeGroup.append("text")
@@ -200,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         bubbles.transition().duration(200)
              .style("fill", b => {
-                if (b === d) return d3.rgb(color(b.category)).darker(1.5);
+                if (b === d) return d3.rgb(b.color).darker(1.5);
                 
                 if (currentView === 'audience') {
                     if (b.audience !== d.audience) return "#d3d3d3";
@@ -210,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (b.category !== d.category) return "#d3d3d3";
                 }
                 
-                return color(b.category);
+                return b.color;
              });
         
         labels.transition().duration(200)
@@ -222,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleMouseOut(event, d) {
         tooltip.transition().duration(500).style("opacity", 0);
         nodeGroup.transition().duration(200).attr("opacity", 1);
-        bubbles.transition().duration(200).style("fill", b => color(b.category));
+        bubbles.transition().duration(200).style("fill", b => b.color);
         labels.transition().duration(200).style("fill", "black");
         d3.selectAll('.bubble').style("stroke", "#fff");
     }
