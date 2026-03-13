@@ -1,15 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const artifacts = [
-        { title: "Mexico Cartels", category: "Infographic", link: "pg1.html", audience: "General", focus: 1, scale: 4, bodyText: "An ancient lens that focuses starlight into coherent data streams, revealing secrets of distant galaxies." },
-        { title: "Flights", category: "Infographic", link: "pg2.html", audience: "General", focus: 1, scale: 3.5, bodyText: "A device that measures temporal displacement, crucial for understanding time-dilation effects near massive objects." },
-        { title: "Building Brains", category: "Exhibit", link: "pg4.html", audience: "General", focus: 1, scale: 4.5, bodyText: "Extracts and stores faint consciousness imprints from the quantum foam." },
-        { title: "Campus Board", category: "Exhibit", link: "pg5.html", audience: "General", focus: 2, scale: 4.2, bodyText: "A crystal that resonates with the gravitational waves of binary stars, creating complex auditory patterns." },
-        { title: "Teaching", category: "Infographic", link: "pg3.html", audience: "General", focus: 1, scale: 5, bodyText: "A fabric woven from solidified vacuum energy, providing unparalleled protection against cosmic radiation." },
-        { title: "ISMRM Presentation", category: "Poster", link: "pg3.html", audience: "Specialized", focus: 3, scale: 4.2, bodyText: "A light-sail designed to navigate the turbulent energy currents of inter-dimensional rifts." },
-        { title: "Neural Coreference", category: "Paper", link: "neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, bodyText: "Generates a localized, stable gravity field, essential for starship docking and habitat stabilization." },
-        { title: "Speaker Decoding", category: "Paper", link: "speaker_decoding.html", audience: "Specialized", focus: 4, scale: 4.5, bodyText: "A quantum device that calculates and displays the most likely outcomes of any given event." },
-        { title: "Attention Morphology", category: "Poster", link: "pg5.html", audience: "Specialized", focus: 4, scale: 4.2, bodyText: "Uses subspace echoes to map terrains and structures obscured by dense matter or energy fields." },
+        { title: "Visualing Cartels", category: "Infographic", link: "artifacts/mexico_cartel.html", audience: "General", focus: 1, scale: 4, bodyText:
+             "This infographic employs choropleths and cohesive theming to distill the multifaceted security risks and revenue structures of regional cartels in Mexico. The design prioritizes visual consistency and readability, serving as an early exploration of how to balance aesthetic cohesion with the integrity of disparate data sources." },
+        { title: "Paper Planes", category: "Infographic", link: "artifacts/flights.html", audience: "General", focus: 1, scale: 3.5, bodyText:
+             "This explainer video utilizes a 'paper-and-pen' animation technique to distill complex aviation data into an accessible, human-centric narrative." },
+        { title: "Tactile Tomography", category: "Exhibit", link: "artifacts/building_brains.html", audience: "General", focus: 1, scale: 4.5, bodyText:
+             "An exhibit that translates the complexities of deuterium metabolic imaging into a standalone physical exhibit featuring laser-engraved acrylic brain models and a mechanical data-collection simulation. It prioritizes inquiry-based learning by replacing abstract digital data with tactile metaphors, allowing audiences to physically experience metabolic reconstruction." },
+        { title: "Find My Mangos", category: "Exhibit", link: "artifacts/campus_board.html", audience: "General", focus: 2, scale: 4.2, bodyText:
+             "A board of campus reimagining real-time location sharing as a physical LED map integrated with a custom web server and microcontroller. It highlights a creative response to limited resolution, utilizing clever techniques to streamline data presention across a physical interface." },
+        { title: "Teaching Data Storytelling", category: "Infographic", link: "artifacts/teaching.html", audience: "General", focus: 1, scale: 5, bodyText: 
+            "A homework assignment redesigned to prioritize a 'message-first' framework into Data Science 112: Principals of Data Science."},
+        { title: "ISMRM Presentation", category: "Poster", link: "artifacts/ismrm_presentation.html", audience: "Specialized", focus: 3, scale: 4.2, bodyText: 
+            "" },
+        { title: "Decoding Coreference", category: "Paper", link: "artifacts/neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, bodyText: 
+            "A project on analyzing a neural dataset to map pronoun coreference, resulting in both a technical conference-style paper and a visual-heavy presentation. It navigates a dual-audience by tailoring the data visualizations, prioritizing technical clarity for experts while using an artistic, progressive reveal to engage peers." },
+        { title: "Speaker Modeling", category: "Paper", link: "artifacts/speaker_decoding.html", audience: "Specialized", focus: 4, scale: 4.5, bodyText:
+             "A poster on exploring the identification of speakers from neural movie-watching data through deep learning and data visualization. It displays the importance of using color effectively to bridge the gap between raw data and audience understanding." },
+        { title: "Attention Morphology", category: "Poster", link: "artifacts/attention_morphology.html", audience: "Specialized", focus: 4, scale: 4.2, bodyText: 
+            "" },
     ];
 
     const formatOrder = ["Exhibit", "Infographic", "Poster", "Paper"];

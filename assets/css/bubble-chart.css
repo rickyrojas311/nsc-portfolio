@@ -5,14 +5,6 @@
     position: relative;
 }
 
-#audience-view-container {
-    display: none; /* Hidden by default, toggled by JS */
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 /* --- UI Controls (Buttons) --- */
 .view-toggle {
     display: flex;
@@ -93,28 +85,6 @@
 .tooltip p {
     margin: 0;
     text-align: left;
-}
-
-/* --- Audience View (Grid Items) --- */
-.audience-bubble {
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto;
-}
-
-.audience-bubble a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-family: "Source Sans Pro", Helvetica, sans-serif;
-    font-size: 1.1em; /* Made these slightly bigger too for consistency */
 }
 
 /* --- Focus View --- */
