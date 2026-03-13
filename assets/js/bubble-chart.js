@@ -21,11 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
             "" },
     ];
 
-    const formatOrder = ["Exhibit", "Infographic", "Poster", "Paper"];
+    const formatOrder = ["Paper", "Poster", "Infographic", "Exhibit"];
     artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
 
     const container = document.getElementById('bubble-chart-container');
     if (!container) return;
+
+    const formViewBtn = document.getElementById('form-view-btn');
 
     container.style.position = "relative";
 
@@ -37,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let width = container.clientWidth;
     // Initial placeholder height
     let height = 300; 
-    let currentView = 'type'; 
+    let currentView = 'generic'; 
 
     const svg = d3.select(container).append("svg")
         .attr("id", "bubble-chart")
@@ -65,6 +67,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .domain([0, artifacts.length - 1])
         .range([width * 0.15, width * 0.85]); 
 
+    const formXScale = d3.scalePoint()
+        .domain(formatOrder)
+        .padding(0.5);
+
+    const formYScale = d3.scaleLinear()
+        .domain([1, 4]); // Focus 1 to 4
+
+    const axisLabelFontSize = "1rem";
+
     // --- AUDIENCE VIEW LABELS ---
     const audienceLabels = svg.append("g")
         .attr("class", "audience-labels")
@@ -85,37 +96,44 @@ document.addEventListener('DOMContentLoaded', function() {
         .style("font-weight", "800")
         .style("font-size", "32px");
 
-    // --- FOCUS VIEW ELEMENTS ---
-    const focusAxisGroup = svg.append("g")
-        .attr("class", "focus-axis")
+    // --- FORM VIEW ELEMENTS (Combined Format + Focus) ---
+    const formAxisGroup = svg.append("g")
+        .attr("class", "form-axis")
         .style("opacity", 0)
-        .style("pointer-events", "none");
+        .style("pointer-events", "none"); // Allow clicks to pass through labels if needed, but axis lines usually strictly visual
 
-    const focusLabelLeft = focusAxisGroup.append("text")
-        .text("← Human Learning")
+    const xAxisGroup = formAxisGroup.append("g")
+        .attr("class", "x-axis")
+        .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
+        .style("font-size", "0.9rem");
+
+    const yAxisGroup = formAxisGroup.append("g")
+        .attr("class", "y-axis")
+        .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
+        .style("font-size", "0.9rem");
+
+    // Labels for the axes
+    const formXLabelLeft = formAxisGroup.append("text")
+        .text("Less Visual")
         .attr("class", "focus-label")
-        .attr("text-anchor", "start");
+        .attr("text-anchor", "start")
+        .style("font-size", axisLabelFontSize)
+        .style("font-weight", "bold");
 
-    const focusLabelRight = focusAxisGroup.append("text")
-        .text("Computational Learning →")
+    const formXLabelRight = formAxisGroup.append("text")
+        .text("More Visual")
         .attr("class", "focus-label")
-        .attr("text-anchor", "end");
+        .attr("text-anchor", "end")
+        .style("font-size", axisLabelFontSize)
+        .style("font-weight", "bold");
 
-    // --- FORMAT VIEW ELEMENTS ---
-    const formatAxisGroup = svg.append("g")
-        .attr("class", "focus-axis")
-        .style("opacity", 0)
-        .style("pointer-events", "none");
-
-    const formatLabelLeft = formatAxisGroup.append("text")
-        .text("← More Visual")
+    const formYLabel = formAxisGroup.append("text")
+        .text("Focus")
         .attr("class", "focus-label")
-        .attr("text-anchor", "start");
-
-    const formatLabelRight = formatAxisGroup.append("text")
-        .text("More Textual →")
-        .attr("class", "focus-label")
-        .attr("text-anchor", "end");
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)")
+        .style("font-size", axisLabelFontSize)
+        .style("font-weight", "bold");
 
     // --- SIMULATION ---
     const simulation = d3.forceSimulation(artifacts)
@@ -173,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentView === 'audience') {
             groupNodes = artifacts.filter(item => item.audience === d.audience);
         } else if (currentView === 'focus') {
-            groupNodes = artifacts.filter(item => item.focus === d.focus);
+            groupNodes = artifacts.filter(item => item.category === d.category && item.focus === d.focus);
         } else {
             groupNodes = artifacts.filter(item => item.category === d.category);
         }
@@ -183,16 +201,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tooltip.transition().duration(200).style("opacity", .95);
         
-        if (currentView === 'audience' || currentView === 'focus') {
-            tooltip.html(`
-                <p style="margin: 0;">${d.bodyText}</p>
-            `);
-        } else {
-            tooltip.html(`
+    if (currentView === 'form') {
+        tooltip.html(`
                 <h3 style="margin: 0 0 5px 0;">${d.category}</h3>
                 <p style="margin: 0;">${d.bodyText}</p>
             `);
-        }
+    } else { // for 'audience' and 'generic'
+        tooltip.html(`<p style="margin: 0;">${d.bodyText}</p>`);
+    }
 
         const tooltipWidth = tooltip.node().offsetWidth;
         const padding = 25;
@@ -250,48 +266,53 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updatePositions() {
-        // --- UPDATED HEIGHT LOGIC ---
-        if (currentView === 'type') {
-            artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
-        } else if (currentView === 'focus') {
-            artifacts.sort((a, b) => a.focus - b.focus);
-        }
-        simulation.nodes(artifacts);
-
         const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
         const baseRadius = Math.max(width / 18, 35);
-        const labelLeft = width * 0.05;
-        const labelRight = width * 0.95;
-        const scaleLeft = width * 0.1;
-        const scaleRight = width * 0.9;
         
-        if (currentView === 'type') {
-            // REDUCED: Was baseRadius * 12, now * 6
-            height = baseRadius * 7; 
+        if (currentView === 'form') {
+            height = Math.max(width * 0.6, 500);
+            artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
+
+            const margin = { top: 130, right: 130, bottom: 130, left: 130 };
             
             svg.transition().duration(1000)
                .attr("height", height)
                .attr("viewBox", `0 0 ${width} ${height}`);
 
-            xScale.range([scaleLeft, scaleRight]);
+            formXScale.range([margin.left, width - margin.right]);
+            formYScale.range([height - margin.bottom, margin.top]);
 
-            const labelY = height - (0.3 * rem);
-            
-            formatLabelLeft
-                .attr("x", labelLeft)
-                .attr("y", labelY);
+            // Update Axes
+            xAxisGroup.attr("transform", `translate(0, ${height - margin.bottom})`)
+                .call(d3.axisBottom(formXScale).tickFormat(""))
+                .call(g => g.select(".domain").remove()); // Minimal style
 
-            formatLabelRight
-                .attr("x", labelRight)
-                .attr("y", labelY);
+            yAxisGroup.attr("transform", `translate(${margin.left}, 0)`)
+                .call(d3.axisLeft(formYScale).ticks(4).tickFormat(d => {
+                   if(d === 1) return "Human (1)";
+                   if(d === 4) return "Comp (4)";
+                   return d;
+                }))
+                .call(g => g.select(".domain").remove());
+
+            // Position Labels
+            formXLabelLeft
+                .attr("x", margin.left)
+                .attr("y", height - 50);
+
+            formXLabelRight
+                .attr("x", width - margin.right)
+                .attr("y", height - 50);
             
-            simulation.force("x", d3.forceX((d, i) => xScale(i)).strength(0.5));
-            simulation.force("y", d3.forceY(height / 2).strength(0.1));
+            formYLabel
+                .attr("x", -height / 2)
+                .attr("y", 20); // Relative to rotated coordinate system
+            
+            simulation.force("x", d3.forceX(d => formXScale(d.category)).strength(0.8));
+            simulation.force("y", d3.forceY(d => formYScale(d.focus)).strength(0.8));
             
             audienceLabels.transition().duration(500).style("opacity", 0);
-            focusAxisGroup.transition().duration(500).style("opacity", 0);
-            const hasControls = document.getElementById('type-view-btn');
-            formatAxisGroup.transition().duration(500).style("opacity", hasControls ? 1 : 0);
+            formAxisGroup.transition().duration(500).style("opacity", 1);
 
         } else if (currentView === 'audience') {
             // REDUCED: Was baseRadius * 20, now * 14
@@ -314,37 +335,29 @@ document.addEventListener('DOMContentLoaded', function() {
             labelSpecialized.attr("x", centerRight).attr("y", 40);
             
             audienceLabels.transition().duration(500).style("opacity", 1);
-            focusAxisGroup.transition().duration(500).style("opacity", 0);
-            formatAxisGroup.transition().duration(500).style("opacity", 0);
-
-        } else if (currentView === 'focus') {
-            // Reuse 'type' view logic for layout
+            formAxisGroup.transition().duration(500).style("opacity", 0);
+        } else if (currentView === 'generic') {
             height = baseRadius * 7;
-
+            artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
+    
             svg.transition().duration(1000)
                .attr("height", height)
                .attr("viewBox", `0 0 ${width} ${height}`);
-
+    
+            const scaleLeft = width * 0.1;
+            const scaleRight = width * 0.9;
             xScale.range([scaleLeft, scaleRight]);
-
-            const labelY = height - (0.3 * rem);
             
-            focusLabelLeft
-                .attr("x", labelLeft)
-                .attr("y", labelY);
-
-            focusLabelRight
-                .attr("x", labelRight)
-                .attr("y", labelY);
-
-            audienceLabels.transition().duration(500).style("opacity", 0);
-            formatAxisGroup.transition().duration(500).style("opacity", 0);
-            focusAxisGroup.transition().duration(500).style("opacity", 1);
-
+            // Update forces
             simulation.force("x", d3.forceX((d, i) => xScale(i)).strength(0.5));
             simulation.force("y", d3.forceY(height / 2).strength(0.1));
+            
+            // Update visibility
+            audienceLabels.transition().duration(500).style("opacity", 0);
+            formAxisGroup.transition().duration(500).style("opacity", 0);
         }
 
+        simulation.nodes(artifacts);
         simulation.alpha(1).restart();
     }
 
@@ -364,29 +377,29 @@ document.addEventListener('DOMContentLoaded', function() {
         resizeTimer = setTimeout(resize, 250);
     });
 
-    const typeViewBtn = document.getElementById('type-view-btn');
     const audienceViewBtn = document.getElementById('audience-view-btn');
-    const focusViewBtn = document.getElementById('focus-view-btn');
 
-    const formatDesc = document.getElementById('format-description');
+    const formDesc = document.getElementById('form-description');
     const audienceDesc = document.getElementById('audience-description');
-    const focusDesc = document.getElementById('focus-description');
 
     function updateDescription(view) {
-        if (formatDesc) formatDesc.style.display = view === 'type' ? 'block' : 'none';
+        if (formDesc) formDesc.style.display = view === 'form' ? 'block' : 'none';
         if (audienceDesc) audienceDesc.style.display = view === 'audience' ? 'block' : 'none';
-        if (focusDesc) focusDesc.style.display = view === 'focus' ? 'block' : 'none';
     }
 
-    if (typeViewBtn) {
-        typeViewBtn.addEventListener('click', (e) => {
+    if (formViewBtn) {
+        formViewBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (currentView === 'type') return;
-            currentView = 'type';
-            typeViewBtn.classList.add('primary');
-            if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
-            if (focusViewBtn) focusViewBtn.classList.remove('primary');
-            updateDescription('type');
+            if (currentView === 'form') {
+                currentView = 'generic';
+                formViewBtn.classList.remove('primary');
+                updateDescription('generic');
+            } else {
+                currentView = 'form';
+                formViewBtn.classList.add('primary');
+                if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
+                updateDescription('form');
+            }
             updatePositions();
         });
     }
@@ -394,25 +407,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (audienceViewBtn) {
         audienceViewBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (currentView === 'audience') return;
-            currentView = 'audience';
-            audienceViewBtn.classList.add('primary');
-            if (typeViewBtn) typeViewBtn.classList.remove('primary');
-            if (focusViewBtn) focusViewBtn.classList.remove('primary');
-            updateDescription('audience');
-            updatePositions();
-        });
-    }
-
-    if (focusViewBtn) {
-        focusViewBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (currentView === 'focus') return;
-            currentView = 'focus';
-            focusViewBtn.classList.add('primary');
-            if (typeViewBtn) typeViewBtn.classList.remove('primary');
-            if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
-            updateDescription('focus');
+            if (currentView === 'audience') {
+                currentView = 'generic';
+                audienceViewBtn.classList.remove('primary');
+                updateDescription('generic');
+            } else {
+                currentView = 'audience';
+                audienceViewBtn.classList.add('primary');
+                if (formViewBtn) formViewBtn.classList.remove('primary');
+                updateDescription('audience');
+            }
             updatePositions();
         });
     }
