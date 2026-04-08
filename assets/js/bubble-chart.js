@@ -2,26 +2,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const artifacts = [
         { title: "Visualing Cartels", category: "Infographic", link: "artifacts/mexico_cartel.html", audience: "General", focus: 1, scale: 4, date: "2023-05-03", displayDate: "May 2023", bodyText:
-             "This infographic employs choropleths and cohesive theming to distill the multifaceted security risks and revenue structures of regional cartels in Mexico. The design prioritizes visual consistency and readability, serving as an early exploration of how to balance aesthetic cohesion with the integrity of disparate data sources." },
+             "This infographic employs choropleths and cohesive theming to distill the security risks of cartels in Mexico. It serves as an early exploration of balancing <b>aesthetic cohesion</b> with the <b>integrity of disparate data sources</b>." },
         { title: "Paper Planes", category: "Infographic", link: "artifacts/flights.html", audience: "General", focus: 1, scale: 3.5, date: "2023-11-01", displayDate: "Nov. 2023", bodyText:
-             "This explainer video utilizes a 'paper-and-pen' animation technique to distill complex aviation data into an accessible, human-centric narrative." },
+             "This explainer video utilizes a 'paper-and-pen' animation technique to distill complex aviation data into an <b>accessible, human-centric narrative</b>." },
         { title: "Tactile Tomography", category: "Exhibit", link: "artifacts/building_brains.html", audience: "General", focus: 1, scale: 4.5, date: "2024-3-01", displayDate: "March 2024", bodyText:
-             "An exhibit that translates the complexities of deuterium metabolic imaging into a standalone physical exhibit featuring laser-engraved acrylic brain models and a mechanical data-collection simulation. It prioritizes inquiry-based learning by replacing abstract digital data with tactile metaphors, allowing audiences to physically experience metabolic reconstruction." },
+             "This physical exhibit translates deuterium metabolic imaging using laser-engraved brain models. It prioritizes <b>inquiry-based learning</b> by replacing abstract digital data with <b>tactile metaphors</b>." },
         { title: "Find My Mangos", category: "Exhibit", link: "artifacts/campus_board.html", audience: "General", focus: 2, scale: 4.2, date: "2024-11-01", displayDate: "Nov. 2024", bodyText:
-             "A board of campus reimagining real-time location sharing as a physical LED map integrated with a custom web server and microcontroller. It highlights a creative response to limited resolution, utilizing clever techniques to streamline data presention across a physical interface." },
+             "This interactive LED map reimagines real-time location sharing on campus. It highlights a <b>creative response</b> to limited resolution to <b>streamline data presentation</b>." },
         { title: "Teaching Data Storytelling", category: "Infographic", link: "artifacts/teaching.html", audience: "General", focus: 1, scale: 5, date: "2026-02-01", displayDate: "Feb. 2026", bodyText: 
-            "A homework assignment redesigned to prioritize a 'message-first' framework into Data Science 112: Principals of Data Science."},
-        { title: "ISMRM Presentation", category: "Poster", link: "artifacts/ismrm_presentation.html", audience: "Specialized", focus: 3, scale: 4.2, date: "2023-09-01", displayDate: "Sep. 2023", bodyText: 
-            "" },
+            "A data science homework assignment redesigned to prioritize a <b>message-first framework</b>. It teaches students the fundamentals of <b>data storytelling</b>."},
+        { title: "ISMRM Presentation", category: "Presentation", link: "artifacts/ismrm_presentation.html", audience: "Specialized", focus: 3, scale: 4.2, date: "2023-09-01", displayDate: "Sep. 2023", bodyText: 
+            "A digital poster showcasing a medical image reconstruction algorithm. It highlights the importance of <b>clear, narrative-driven communication</b> for a <b>specialized audience</b>." },
         { title: "Decoding Coreference", category: "Paper", link: "artifacts/neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, date: "2024-6-01", displayDate: "June 2026", bodyText: 
-            "A project on analyzing a neural dataset to map pronoun coreference, resulting in both a technical conference-style paper and a visual-heavy presentation. It navigates a dual-audience by tailoring the data visualizations, prioritizing technical clarity for experts while using an artistic, progressive reveal to engage peers." },
+            "This project navigates a dual-audience by <b>tailoring data visualizations</b> across a technical paper and a presentation. It balances <b>technical clarity</b> with an <b>artistic, progressive reveal</b>." },
         { title: "Speaker Modeling", category: "Paper", link: "artifacts/speaker_decoding.html", audience: "Specialized", focus: 4, scale: 4.5, date: "2025-03-01", displayDate: "March 2025", bodyText:
-             "A poster on exploring the identification of speakers from neural movie-watching data through deep learning and data visualization. It displays the importance of using color effectively to bridge the gap between raw data and audience understanding." },
-        { title: "Attention Morphology", category: "Poster", link: "artifacts/attention_morphology.html", audience: "Specialized", focus: 4, scale: 4.2, date: "2026-04-01", displayDate: "April 2026", bodyText: 
-            "" },
+             "A research poster exploring speaker identification from neural data. It displays the importance of <b>using color effectively</b> to bridge the gap between raw data and audience understanding." },
+        { title: "Attention guided encoding", category: "Presentation", link: "artifacts/attention_morphology.html", audience: "Specialized", focus: 4, scale: 4.2, date: "2026-04-01", displayDate: "April 2026", bodyText: 
+            "A senior thesis exploring the gap between large language models and human linguistic structures. It highlights the critical role of <b>science communication</b> in defending methodology to an <b>expert audience</b>." },
     ];
 
-    const formatOrder = ["Paper", "Poster", "Infographic", "Exhibit"];
+    const formatOrder = ["Paper", "Presentation", "Infographic", "Exhibit"];
     artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
 
     const container = document.getElementById('bubble-chart-container');
