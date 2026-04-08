@@ -28,18 +28,33 @@
 
             <div id="main">
                 <section>
+                    <!-- Default Description -->
+                    <div id="default-description">
+                        <p style="text-align: center; margin-bottom: 2rem; color: #7a7a7a;">
+                            <i>Select a view below to explore the artifacts organized by their creation timeline, intended audience, or format.</i>
+                        </p>
+                    </div>
                     <ul class="actions">
+						<li><a href="#" id="timeline-view-btn" class="button">Timeline</a></li>
 						<li><a href="#" id="audience-view-btn" class="button">Audience</a></li>
 						<li><a href="#" id="form-view-btn" class="button">Form</a></li>
 					</ul>
+					
+                    <!-- View Titles -->
+                    <div id="form-title" style="display: none;">
+                        <h3 style="text-align: center;">Artifact Focus Affects Form</h3>
+                    </div>
+                    <div id="timeline-title" style="display: none;">
+                        <h3 style="text-align: center;">Chronological Timeline</h3>
+                    </div>
+
 					<div id="bubble-chart-container"></div>
 
                     <!-- Form View Description (Combined Format/Focus) -->
                     <div id="form-description" class="view-description" style="display: none;">
-                        <h3>Artifact Forms</h3>
                         <p>
                             This scatter plot organizes artifacts by their format (horizontal axis) and their focus on human vs. computational learning (vertical axis). 
-                            Items higher up deal with more computational concepts, while items lower down focus on human learning.
+                            Items higher up focus on human learning, while items lower down deal with more computational concepts.
                         </p>
                     </div>
 
@@ -55,6 +70,11 @@
                                 <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Timeline View Description -->
+                    <div id="timeline-description" class="view-description" style="display: none;">
+                        <p>This view organizes the artifacts based on when they were created, illustrating the progression of my work and visualization techniques over time.</p>
                     </div>
                 </section>
 

@@ -1,23 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const artifacts = [
-        { title: "Visualing Cartels", category: "Infographic", link: "artifacts/mexico_cartel.html", audience: "General", focus: 1, scale: 4, bodyText:
+        { title: "Visualing Cartels", category: "Infographic", link: "artifacts/mexico_cartel.html", audience: "General", focus: 1, scale: 4, date: "2023-05-03", displayDate: "May 2023", bodyText:
              "This infographic employs choropleths and cohesive theming to distill the multifaceted security risks and revenue structures of regional cartels in Mexico. The design prioritizes visual consistency and readability, serving as an early exploration of how to balance aesthetic cohesion with the integrity of disparate data sources." },
-        { title: "Paper Planes", category: "Infographic", link: "artifacts/flights.html", audience: "General", focus: 1, scale: 3.5, bodyText:
+        { title: "Paper Planes", category: "Infographic", link: "artifacts/flights.html", audience: "General", focus: 1, scale: 3.5, date: "2023-11-01", displayDate: "Nov. 2023", bodyText:
              "This explainer video utilizes a 'paper-and-pen' animation technique to distill complex aviation data into an accessible, human-centric narrative." },
-        { title: "Tactile Tomography", category: "Exhibit", link: "artifacts/building_brains.html", audience: "General", focus: 1, scale: 4.5, bodyText:
+        { title: "Tactile Tomography", category: "Exhibit", link: "artifacts/building_brains.html", audience: "General", focus: 1, scale: 4.5, date: "2024-3-01", displayDate: "March 2024", bodyText:
              "An exhibit that translates the complexities of deuterium metabolic imaging into a standalone physical exhibit featuring laser-engraved acrylic brain models and a mechanical data-collection simulation. It prioritizes inquiry-based learning by replacing abstract digital data with tactile metaphors, allowing audiences to physically experience metabolic reconstruction." },
-        { title: "Find My Mangos", category: "Exhibit", link: "artifacts/campus_board.html", audience: "General", focus: 2, scale: 4.2, bodyText:
+        { title: "Find My Mangos", category: "Exhibit", link: "artifacts/campus_board.html", audience: "General", focus: 2, scale: 4.2, date: "2024-11-01", displayDate: "Nov. 2024", bodyText:
              "A board of campus reimagining real-time location sharing as a physical LED map integrated with a custom web server and microcontroller. It highlights a creative response to limited resolution, utilizing clever techniques to streamline data presention across a physical interface." },
-        { title: "Teaching Data Storytelling", category: "Infographic", link: "artifacts/teaching.html", audience: "General", focus: 1, scale: 5, bodyText: 
+        { title: "Teaching Data Storytelling", category: "Infographic", link: "artifacts/teaching.html", audience: "General", focus: 1, scale: 5, date: "2026-02-01", displayDate: "Feb. 2026", bodyText: 
             "A homework assignment redesigned to prioritize a 'message-first' framework into Data Science 112: Principals of Data Science."},
-        { title: "ISMRM Presentation", category: "Poster", link: "artifacts/ismrm_presentation.html", audience: "Specialized", focus: 3, scale: 4.2, bodyText: 
+        { title: "ISMRM Presentation", category: "Poster", link: "artifacts/ismrm_presentation.html", audience: "Specialized", focus: 3, scale: 4.2, date: "2023-09-01", displayDate: "Sep. 2023", bodyText: 
             "" },
-        { title: "Decoding Coreference", category: "Paper", link: "artifacts/neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, bodyText: 
+        { title: "Decoding Coreference", category: "Paper", link: "artifacts/neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, date: "2024-6-01", displayDate: "June 2026", bodyText: 
             "A project on analyzing a neural dataset to map pronoun coreference, resulting in both a technical conference-style paper and a visual-heavy presentation. It navigates a dual-audience by tailoring the data visualizations, prioritizing technical clarity for experts while using an artistic, progressive reveal to engage peers." },
-        { title: "Speaker Modeling", category: "Paper", link: "artifacts/speaker_decoding.html", audience: "Specialized", focus: 4, scale: 4.5, bodyText:
+        { title: "Speaker Modeling", category: "Paper", link: "artifacts/speaker_decoding.html", audience: "Specialized", focus: 4, scale: 4.5, date: "2025-03-01", displayDate: "March 2025", bodyText:
              "A poster on exploring the identification of speakers from neural movie-watching data through deep learning and data visualization. It displays the importance of using color effectively to bridge the gap between raw data and audience understanding." },
-        { title: "Attention Morphology", category: "Poster", link: "artifacts/attention_morphology.html", audience: "Specialized", focus: 4, scale: 4.2, bodyText: 
+        { title: "Attention Morphology", category: "Poster", link: "artifacts/attention_morphology.html", audience: "Specialized", focus: 4, scale: 4.2, date: "2026-04-01", displayDate: "April 2026", bodyText: 
             "" },
     ];
 
@@ -72,9 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .padding(0.5);
 
     const formYScale = d3.scaleLinear()
-        .domain([1, 4]); // Focus 1 to 4
+        .domain([5, 0]); // Focus 4 (Comp) at bottom to 1 (Human) at top, expanded domain squeezes items towards center
 
-    const axisLabelFontSize = "1rem";
+    const axisLabelFontSize = "1.1rem";
 
     // --- AUDIENCE VIEW LABELS ---
     const audienceLabels = svg.append("g")
@@ -105,12 +105,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const xAxisGroup = formAxisGroup.append("g")
         .attr("class", "x-axis")
         .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
-        .style("font-size", "0.9rem");
+        .style("font-size", "1.1rem");
 
     const yAxisGroup = formAxisGroup.append("g")
         .attr("class", "y-axis")
         .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
-        .style("font-size", "0.9rem");
+        .style("font-size", "1.1rem");
 
     // Labels for the axes
     const formXLabelLeft = formAxisGroup.append("text")
@@ -127,13 +127,16 @@ document.addEventListener('DOMContentLoaded', function() {
         .style("font-size", axisLabelFontSize)
         .style("font-weight", "bold");
 
-    const formYLabel = formAxisGroup.append("text")
-        .text("Focus")
-        .attr("class", "focus-label")
-        .attr("text-anchor", "middle")
-        .attr("transform", "rotate(-90)")
-        .style("font-size", axisLabelFontSize)
-        .style("font-weight", "bold");
+    // --- TIMELINE VIEW ELEMENTS ---
+    const timelineAxisGroup = svg.append("g")
+        .attr("class", "timeline-axis")
+        .style("opacity", 0)
+        .style("pointer-events", "none");
+
+    const timelineXAxisGroup = timelineAxisGroup.append("g")
+        .attr("class", "x-axis")
+        .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
+        .style("font-size", "1.1rem");
 
     // --- SIMULATION ---
     const simulation = d3.forceSimulation(artifacts)
@@ -192,6 +195,8 @@ document.addEventListener('DOMContentLoaded', function() {
             groupNodes = artifacts.filter(item => item.audience === d.audience);
         } else if (currentView === 'focus') {
             groupNodes = artifacts.filter(item => item.category === d.category && item.focus === d.focus);
+        } else if (currentView === 'timeline') {
+            groupNodes = [d]; // Only highlight the specific node in timeline
         } else {
             groupNodes = artifacts.filter(item => item.category === d.category);
         }
@@ -206,7 +211,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h3 style="margin: 0 0 5px 0;">${d.category}</h3>
                 <p style="margin: 0;">${d.bodyText}</p>
             `);
-    } else { // for 'audience' and 'generic'
+    } else if (currentView === 'timeline') {
+        tooltip.html(`
+                <h3 style="margin: 0 0 2px 0;">${d.title}</h3>
+                <h4 style="margin: 0 0 8px 0;">${d.displayDate}</h4>
+                <p style="margin: 0;">${d.bodyText}</p>
+            `);
+    } else if (currentView === 'generic') {
+        tooltip.html(`
+                <h3 style="margin: 0 0 2px 0;">${d.category}</h3>
+                <h4 style="margin: 0 0 8px 0;">${d.audience} Audience</h4>
+                <p style="margin: 0;">${d.bodyText}</p>
+            `);
+    } else { // for 'audience'
         tooltip.html(`<p style="margin: 0;">${d.bodyText}</p>`);
     }
 
@@ -231,6 +248,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     return (b.audience === d.audience) ? 1 : 0.4;
                 } else if (currentView === 'focus') {
                     return (b.focus === d.focus) ? 1 : 0.4;
+                } else if (currentView === 'timeline') {
+                    return (b === d) ? 1 : 0.4;
                 } else {
                     return (b.category === d.category) ? 1 : 0.4;
                 }
@@ -244,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (b.audience !== d.audience) return "#d3d3d3";
                 } else if (currentView === 'focus') {
                     if (b.focus !== d.focus) return "#d3d3d3";
+                } else if (currentView === 'timeline') {
+                    if (b !== d) return "#d3d3d3";
                 } else {
                     if (b.category !== d.category) return "#d3d3d3";
                 }
@@ -270,10 +291,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const baseRadius = Math.max(width / 18, 35);
         
         if (currentView === 'form') {
-            height = Math.max(width * 0.6, 500);
+            height = Math.max(width * 0.75, 750);
             artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
 
-            const margin = { top: 130, right: 130, bottom: 130, left: 130 };
+            const margin = { top: 100, right: 100, bottom: 100, left: 120 };
             
             svg.transition().duration(1000)
                .attr("height", height)
@@ -288,12 +309,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 .call(g => g.select(".domain").remove()); // Minimal style
 
             yAxisGroup.attr("transform", `translate(${margin.left}, 0)`)
-                .call(d3.axisLeft(formYScale).ticks(4).tickFormat(d => {
-                   if(d === 1) return "Human (1)";
-                   if(d === 4) return "Comp (4)";
-                   return d;
+                .call(d3.axisLeft(formYScale)
+                    .tickValues([1, 2, 3, 4, 5])
+                    .tickFormat(d => {
+                       if(d === 1) return "Human Focus";
+                       if(d === 5) return "Computational Focus";
+                       return "";
                 }))
-                .call(g => g.select(".domain").remove());
+                .call(g => g.select(".domain").remove())
+                .selectAll("text")
+                .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
+                .style("font-size", "1.1rem")
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .attr("x", 0)
+                .attr("y", -25); // Pushes the vertical text slightly left of the axis path
 
             // Position Labels
             formXLabelLeft
@@ -304,15 +334,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 .attr("x", width - margin.right)
                 .attr("y", height - 50);
             
-            formYLabel
-                .attr("x", -height / 2)
-                .attr("y", 20); // Relative to rotated coordinate system
-            
             simulation.force("x", d3.forceX(d => formXScale(d.category)).strength(0.8));
             simulation.force("y", d3.forceY(d => formYScale(d.focus)).strength(0.8));
             
             audienceLabels.transition().duration(500).style("opacity", 0);
             formAxisGroup.transition().duration(500).style("opacity", 1);
+            timelineAxisGroup.transition().duration(500).style("opacity", 0);
 
         } else if (currentView === 'audience') {
             // REDUCED: Was baseRadius * 20, now * 14
@@ -336,6 +363,34 @@ document.addEventListener('DOMContentLoaded', function() {
             
             audienceLabels.transition().duration(500).style("opacity", 1);
             formAxisGroup.transition().duration(500).style("opacity", 0);
+            timelineAxisGroup.transition().duration(500).style("opacity", 0);
+        } else if (currentView === 'timeline') {
+            height = Math.max(width * 0.3, 250);
+    
+            svg.transition().duration(1000)
+               .attr("height", height)
+               .attr("viewBox", `0 0 ${width} ${height}`);
+    
+            const dates = artifacts.map(d => new Date(d.date));
+            const timeDomain = [d3.timeMonth.offset(d3.min(dates), -2), d3.timeMonth.offset(d3.max(dates), 2)];
+            
+            const timeScale = d3.scaleTime()
+                .domain(timeDomain)
+                .range([Math.max(width * 0.1, 50), Math.min(width * 0.9, width - 50)]);
+    
+            timelineXAxisGroup.attr("transform", `translate(0, ${height - 50})`)
+                .call(d3.axisBottom(timeScale).ticks(5).tickFormat(d3.timeFormat("%b '%y")))
+                .call(g => g.select(".domain").remove())
+                .selectAll("text")
+                .style("font-family", '"Source Sans Pro", Helvetica, sans-serif')
+                .style("font-size", "1.1rem");
+    
+            simulation.force("x", d3.forceX(d => timeScale(new Date(d.date))).strength(0.8));
+            simulation.force("y", d3.forceY(height / 2).strength(0.8));
+    
+            audienceLabels.transition().duration(500).style("opacity", 0);
+            formAxisGroup.transition().duration(500).style("opacity", 0);
+            timelineAxisGroup.transition().duration(500).style("opacity", 1);
         } else if (currentView === 'generic') {
             height = baseRadius * 7;
             artifacts.sort((a, b) => formatOrder.indexOf(a.category) - formatOrder.indexOf(b.category));
@@ -355,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update visibility
             audienceLabels.transition().duration(500).style("opacity", 0);
             formAxisGroup.transition().duration(500).style("opacity", 0);
+            timelineAxisGroup.transition().duration(500).style("opacity", 0);
         }
 
         simulation.nodes(artifacts);
@@ -380,11 +436,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const audienceViewBtn = document.getElementById('audience-view-btn');
 
     const formDesc = document.getElementById('form-description');
+    const formTitle = document.getElementById('form-title');
     const audienceDesc = document.getElementById('audience-description');
+    const timelineDesc = document.getElementById('timeline-description');
+    const timelineTitle = document.getElementById('timeline-title');
+    const defaultDesc = document.getElementById('default-description');
+    const timelineViewBtn = document.getElementById('timeline-view-btn');
 
     function updateDescription(view) {
         if (formDesc) formDesc.style.display = view === 'form' ? 'block' : 'none';
+        if (formTitle) formTitle.style.display = view === 'form' ? 'block' : 'none';
         if (audienceDesc) audienceDesc.style.display = view === 'audience' ? 'block' : 'none';
+        if (timelineDesc) timelineDesc.style.display = view === 'timeline' ? 'block' : 'none';
+        if (timelineTitle) timelineTitle.style.display = view === 'timeline' ? 'block' : 'none';
+        if (defaultDesc) defaultDesc.style.display = view === 'generic' ? 'block' : 'none';
     }
 
     if (formViewBtn) {
@@ -398,6 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentView = 'form';
                 formViewBtn.classList.add('primary');
                 if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
+                if (timelineViewBtn) timelineViewBtn.classList.remove('primary');
                 updateDescription('form');
             }
             updatePositions();
@@ -415,7 +481,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentView = 'audience';
                 audienceViewBtn.classList.add('primary');
                 if (formViewBtn) formViewBtn.classList.remove('primary');
+                if (timelineViewBtn) timelineViewBtn.classList.remove('primary');
                 updateDescription('audience');
+            }
+            updatePositions();
+        });
+    }
+
+    if (timelineViewBtn) {
+        timelineViewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentView === 'timeline') {
+                currentView = 'generic';
+                timelineViewBtn.classList.remove('primary');
+                updateDescription('generic');
+            } else {
+                currentView = 'timeline';
+                timelineViewBtn.classList.add('primary');
+                if (formViewBtn) formViewBtn.classList.remove('primary');
+                if (audienceViewBtn) audienceViewBtn.classList.remove('primary');
+                updateDescription('timeline');
             }
             updatePositions();
         });
