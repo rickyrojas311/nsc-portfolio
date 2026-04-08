@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
         { title: "Teaching Data Storytelling", category: "Infographic", link: "artifacts/teaching.html", audience: "General", focus: 1, scale: 5, date: "2026-02-01", displayDate: "Feb. 2026", bodyText: 
             "A data science homework assignment redesigned to prioritize a <b>message-first framework</b>. It teaches students the fundamentals of <b>data storytelling</b>."},
         { title: "ISMRM Presentation", category: "Presentation", link: "artifacts/ismrm_presentation.html", audience: "Specialized", focus: 3, scale: 4.2, date: "2023-09-01", displayDate: "Sep. 2023", bodyText: 
-            "A digital poster showcasing a medical image reconstruction algorithm. It highlights the importance of <b>clear, narrative-driven communication</b> for a <b>specialized audience</b>." },
-        { title: "Decoding Coreference", category: "Paper", link: "artifacts/neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, date: "2024-6-01", displayDate: "June 2026", bodyText: 
+            "A digital presentation showcasing a image reconstruction algorithm. It highlights the importance of <b>clear, narrative-driven communication</b> for a <b>specialized audience</b>." },
+        { title: "Decoding Coreference", category: "Paper", link: "artifacts/neural_coreference.html", audience: "Specialized", focus: 4, scale: 5, date: "2024-6-01", displayDate: "June 2024", bodyText: 
             "This project navigates a dual-audience by <b>tailoring data visualizations</b> across a technical paper and a presentation. It balances <b>technical clarity</b> with an <b>artistic, progressive reveal</b>." },
         { title: "Speaker Modeling", category: "Paper", link: "artifacts/speaker_decoding.html", audience: "Specialized", focus: 4, scale: 4.5, date: "2025-03-01", displayDate: "March 2025", bodyText:
-             "A research poster exploring speaker identification from neural data. It displays the importance of <b>using color effectively</b> to bridge the gap between raw data and audience understanding." },
+             "A project exploring speaker identification from neural data. It displays the importance of <b>using color effectively</b> to bridge the gap between raw data and audience understanding." },
         { title: "Attention guided encoding", category: "Presentation", link: "artifacts/attention_morphology.html", audience: "Specialized", focus: 4, scale: 4.2, date: "2026-04-01", displayDate: "April 2026", bodyText: 
             "A senior thesis exploring the gap between large language models and human linguistic structures. It highlights the critical role of <b>science communication</b> in defending methodology to an <b>expert audience</b>." },
     ];
